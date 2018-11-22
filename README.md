@@ -1,4 +1,12 @@
-# setup github.com
+# flow: 
+# - setup REPO: github.com, CI: travis-ci.org, CLOUD: cloud.google.com
+# - create REPO
+# - link REPO to CI
+# - create CLOUD k8s CLUSTER
+# - link CI to CLOUD
+
+# create REPO
+# see: https://github.com
 git init
 git add .
 git c -m Initial commit
@@ -9,7 +17,31 @@ git remote get-url origin # get repo url
 git push origin master
 git push --set-upstream origin master # allow to use git push
 
-# setup travis-ci.org
-# https://travis-ci.org/account/repositories -> sync account & opt-in multi-k8s
+# link CI
+# https://travis-ci.org
+# sync account & opt-in REPO
+# - see: https://travis-ci.org/account/repositories
 
-# setup console.cloud.google.com
+# setup CLOUD
+# see: http://console.cloud.google.com
+# - link billing to you project (not needed in trial)
+# - craete CLUSTER
+
+
+# link CI to CLOUD
+# create 'service-account' on CLOUD
+# - ui:IAM/Service accounts/Create service account
+# - with role: Kubernetes Engine Admin
+# - with key: type JSON
+# - download: <multi-k8s-223207-703e17d78af5>.json as service-account.json file
+# encrypt file using travis sdk (travis cmd)
+travis encrypt-file service-account.json -r sppiotrowski/multi-k8s
+# - remove origin file: service-account.json
+# - add encrypted file: service-account.json.enc to REPO
+# create .travis.yml
+# - add to .travis.yml line with: openssl cmd
+# - setup CLOUD sdk (to have gcloud toolbox)
+# - see: https://sdk.cloud.google.com
+# authorize gcloud with your credentials using: service-account.json
+# - setup travis cli
+# - encrypt & upload service-account.json to CI
