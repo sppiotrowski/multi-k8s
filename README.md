@@ -45,3 +45,24 @@ travis encrypt-file service-account.json -r sppiotrowski/multi-k8s
 # authorize gcloud with your credentials using: service-account.json
 # - setup travis cli
 # - encrypt & upload service-account.json to CI
+
+# setup CLOUD console
+# - ui: activate cloud shell
+# - setup kubectl
+kubectl config set project multi-k8s-223207
+kubectl config set compute/zone europe-west3-a
+kubectl container clusters get-credentias multi-cluster
+# add secret for postgres docker image
+kubectl create secret generic pgpassword --from-literal PGPASSWORD=
+mypgpassword123
+
+# install helm on CLOUD
+# - see: https://docs.helm.sh/using_helm/#from-script
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+# setup RBAC
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-role --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+# init helm
+helm init --service-account tiller --upgrade
