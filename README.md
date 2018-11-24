@@ -67,3 +67,4 @@ kubectl create clusterrolebinding tiller-cluster-role --clusterrole=cluster-admi
 # init helm
 helm init --service-account tiller --upgrade
 helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
+git co -b devel
