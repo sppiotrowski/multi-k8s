@@ -32,10 +32,9 @@ eval "docker push $(dockerhub_repo multi-client):$GIT_SHA"
 eval "docker push $(dockerhub_repo multi-server):$GIT_SHA"
 eval "docker push $(dockerhub_repo multi-worker):$GIT_SHA"
 
+# configure k8s
+kubectl apply -f k8s
+
 eval "kubectl set image deployments/client-deployment client=$(dockerhub_repo multi-client)"
 eval "kubectl set image deployments/server-deployment server=$(dockerhub_repo multi-server)"
 eval "kubectl set image deployments/worker-deployment worker=$(dockerhub_repo multi-worker)"
-# 
-# # configure k8s
-kubectl apply -f k8s
-kubectl set image deployments/server-deployment server=sppiotrowski/multi-server
